@@ -8,7 +8,9 @@ const router = require('./router/index')
 
 
 app.use(cors({
-  origin: "https://tasklist-beige.vercel.app/",
+  // origin: "https://tasklist-beige.vercel.app/",
+    origin: "*",
+
   methods: "GET,POST,PUT,DELETE",
   credentials: true,
 }));
