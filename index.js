@@ -6,17 +6,31 @@ const cors = require("cors");
 const ConnectDB = require("./config/db");
 const router = require("./router/index");
 
+const allowedOrigins = [
+  "https://tasklist-beige.vercel.app",
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
-    // origin: "https://tasklist-beige.vercel.app/",
-    // origin: "*",
+    origin: function (origin, callback) {
+      // allow requests with no origin (like Postman)
+      if (!origin) return callback(null, true);
 
-    origin: ["https://tasklist-beige.vercel.app/", "http://localhost:5173"],
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true,
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg = "The CORS policy for this site does not allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+
+      return callback(null, true);
+    },
+    credentials: true, // <-- important when using withCredentials
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
-app.options("*", cors());
+
+
+
 
 app.use(express.json());
 
