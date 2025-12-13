@@ -1,4 +1,4 @@
-name: Deploy Node App to Render
+name: node deploay
 
 on:
   workflow_dispatch:   # Manual trigger
