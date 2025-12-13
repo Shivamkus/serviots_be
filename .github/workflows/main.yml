@@ -1,0 +1,37 @@
+name: Deploy Node App to Render
+
+on:
+  workflow_dispatch:   # Manual trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # 3️⃣ Install dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # 4️⃣ Run tests
+      - name: Run Tests
+        run: npm test
+
+      # 5️⃣ Build (optional)
+      - name: Build Project
+        run: npm run build --if-present
+
+      # 6️⃣ Trigger Render Deployment
+      - name: Deploy to Render
+        run: curl -X POST "$RENDER_DEPLOY_HOOK"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
