@@ -52,6 +52,7 @@ exports.login = async (req, res) => {
       return res.status(404).json({message : "User Not Found"});
     }
     const matchPassword = await bcrypt.compare(password, existUser.password);
+    console.log('matchPassword', matchPassword)
     if (!matchPassword) {
       return res.status(400).json({
         message: "Password not matched",
